@@ -1,87 +1,90 @@
 # Claude Code Switch (cc-switch) 🔧
 
-> A streamlined tool to switch between Claude Pro Profiles and Service Providers (OpenRouter) for [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview).
+> Switch between multiple Claude Pro accounts and OpenRouter instantly.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## 🌟 Features
+## ✨ Features
 
-- 👤 **Profile Management**: Manage and switch between multiple Claude Pro accounts/profiles configured in your Keychain.
-- 🔌 **Service Provider Support**: configure and use **OpenRouter** as a backend provider for Claude Code.
-- ⚡ **Zero Dependencies**: Pure Bash script (except for `curl` and standard system tools).
+If you use [Claude Code](https://docs.anthropic.com/en/docs/agents-and-tools/claude-code/overview), you might need to:
+1.  **Switch Accounts**: Toggle between Personal and Work Claude Pro subscriptions.
+2.  **Use API Providers**: Switch to OpenRouter for access to other models or billing.
+3.  **Bypass Permissions**: Quickly run safe commands without constant approval checks.
 
-## 🛠️ Installation
+**cc-switch** solves this with a simple `ccs` command.
 
-### Quick Install (Local)
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/foreveryh/claude-code-switch.git cc-switch
-   cd cc-switch
-   ```
-
-2. Run the installer:
-   ```bash
-   ./install.sh
-   source ~/.zshrc  # or ~/.bashrc
-   ```
-
-### Manual Install
-
-Copy `ccs` to your path (e.g., `~/.local/bin/`) and make it executable.
-
-## 📖 Usage
-
-### Profile Management (Claude Pro)
-
-Manage multiple Claude Pro logins (stored in macOS Keychain).
+## 📦 Installation
 
 ```bash
-# list saved profiles
-ccs list
+```bash
+# One-line install
+curl -fsSL https://raw.githubusercontent.com/venkycs/cc-switch/main/install.sh | bash
 
-# Save current CLI login as a profile
-ccs save work
-
-# Switch to a profile
-ccs use work
-
-# Delete a profile
-ccs del work
+# Reload Shell
+source ~/.zshrc  # or ~/.bashrc
+```
 ```
 
-### Service Providers
+## 🎮 Usage
 
-Use OpenRouter as the API provider.
+### 1. Manage Profiles (Claude Pro)
+
+Easily save and switch between different Claude accounts stored in your Keychain.
 
 ```bash
+# Login and save a new profile (Interactive)
+ccs login work
+
+# Switch to 'work' profile
+ccs use work
+
+# List saved profiles
+ccs list
+```
+
+### 2. Use OpenRouter
+
+Switch to OpenRouter API backend.
+
+```bash
+# Set your key once
+ccs set-key sk-or-your-key-here
+
 # Switch to OpenRouter
-# (Requires OPENROUTER_API_KEY to be set in config or env)
 ccs openrouter
 ```
 
-### Checks
+### 3. Shortcut for Claude (`c`)
+
+We added a super-short command `c` to run Claude Code faster (skipping permission checks).
+
+Instead of typing:
 ```bash
-# Check current status/mode
+claude --dangerously-skip-permissions
+```
+
+Just type:
+```bash
+c
+```
+(You can also pass arguments, e.g., `c "fix this bug"`)
+
+### 4. Updates & Status
+
+```bash
+# Update to latest version
+ccs update
+
+# Check status
 ccs status
 ```
 
-## ⚙️ Configuration
-
-The tool uses `~/.cc-switch_config` for persistent configuration.
-
-```bash
-# ~/.cc-switch_config
-OPENROUTER_API_KEY=sk-or-your-key
-OPENROUTER_MODEL=anthropic/claude-3.5-sonnet
-```
-
-You can also set these as environment variables in your shell.
-
-## 🤝 Contributing
-
-Issues and Pull Requests are welcome!
+## 📚 Documentation
+For detailed architecture and how it works under the hood, check out [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## 📄 License
+[MIT](LICENSE)
 
-This project is licensed under the [MIT License](LICENSE).
+## ⚠️ Disclaimer
+**Use `ccs run` (or the `--dangerously-skip-permissions` flag) at your own risk.**
+This tool switches authentication contexts and environment variables. While it aims to be safe, modifying your shell environment and running AI agents with permission overrides can have unintended consequences. The authors are not responsible for any data loss or issues arising from the use of this tool. Always review what the AI is doing.

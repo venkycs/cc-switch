@@ -5,7 +5,7 @@ set -euo pipefail
 # - Writes a cc-switch() function into your shell rc
 
 # GitHub repository info
-GITHUB_REPO="foreveryh/claude-code-switch"
+GITHUB_REPO="venkycs/cc-switch"
 GITHUB_BRANCH="main"
 GITHUB_RAW="https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}"
 
@@ -70,7 +70,7 @@ ccs() {
   fi
 
   case "\$1" in
-    "use"|"openrouter")
+    "use"|"switch"|"openrouter"|"or")
        # Simplify: Always source if we are switching environment
        source "\$script" "\$@"
        ;;
@@ -79,6 +79,7 @@ ccs() {
        ;;
   esac
 }
+
 $END_MARK
 EOF
 }
@@ -100,12 +101,12 @@ download_from_github() {
 main() {
   mkdir -p "$INSTALL_DIR"
 
-  if $LOCAL_MODE && [[ -f "$SCRIPT_DIR/ccs" ]]; then
+  if $LOCAL_MODE && [[ -f "$SCRIPT_DIR/bin/ccs" ]]; then
     echo "Installing from local directory..."
-    cp -f "$SCRIPT_DIR/ccs" "$DEST_SCRIPT_PATH"
+    cp -f "$SCRIPT_DIR/bin/ccs" "$DEST_SCRIPT_PATH"
   else
     echo "Installing from GitHub..."
-    download_from_github "${GITHUB_RAW}/ccs" "$DEST_SCRIPT_PATH" || {
+    download_from_github "${GITHUB_RAW}/bin/ccs" "$DEST_SCRIPT_PATH" || {
       echo "Error: failed to download ccs" >&2
       exit 1
     }
@@ -124,7 +125,9 @@ main() {
   echo ""
   echo "   Then use:"
   echo "     ccs list"
-  echo "     ccs openrouter"
+  echo "     ccs list
+     ccs openrouter
+     c                  # Runs 'claude --dangerously-skip-permissions'"
 }
 
 main "$@"
